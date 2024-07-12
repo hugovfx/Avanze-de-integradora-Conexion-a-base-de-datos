@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil del Usuario</title>
+  <!-- Import Google Icon Font -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Import materialize.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!-- Custom Styles -->
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #fff;
+    }
+    .header {
+      width: 100%;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: green;
+    }
+    .header .site-name {
+      font-size: 24px;
+      font-weight: bold;
+      color: #fff; /* Color del texto */
+    }
+    .header .brand-logo img {
+      width: 100px; /* Ajusta el ancho del logo */
+      height: auto; /* Mantiene la proporción del logo */
+    }
+    .profile-container {
+      width: 100%;
+      max-width: 600px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="site-name">Tianguis UTCH</div>
+    <div class="brand-logo">
+      <img src="https://www.utch.edu.mx/wp-content/uploads/2022/03/cazador-fichas.png" alt="Logo" style="height: 50px; width: 50px;">
+    </div>
+  </div>
+  <div class="profile-container">
+    <h5 class="center-align">Perfil del Usuario</h5>
+    <div class="row">
+      <div class="input-field col s12">
+        <input id="nombre" type="text" class="validate" readonly>
+        <label for="nombre">Nombre</label>
+      </div>
+      <div class="input-field col s12">
+        <input id="apellido" type="text" class="validate" readonly>
+        <label for="apellido">Apellido</label>
+      </div>
+      <div class="input-field col s12">
+        <input id="email" type="email" class="validate" readonly>
+        <label for="email">Correo</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Import jQuery before materialize.js -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      fetch('/profile-data')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error al obtener los datos del perfil');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Datos recibidos:', data); // Log para depuración
+          document.getElementById('nombre').value = data.user_nombre;
+          document.getElementById('apellido').value = data.user_apellido;
+          document.getElementById('email').value = data.user_email;
+          M.updateTextFields(); // Actualizar los campos de texto de MaterializeCSS
+        })
+        .catch(error => {
+          console.error('Error al obtener los datos del perfil:', error);
+        });
+    });
+  </script>
+</body>
+</html>
